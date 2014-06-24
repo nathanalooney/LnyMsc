@@ -1,0 +1,16 @@
+{
+  "name": "lnymsc",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Nathan Looney",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.4.4",
+    "logfmt": "^1.1.2"
+  }
+}
