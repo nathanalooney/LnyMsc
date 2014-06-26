@@ -22,7 +22,7 @@ exports.createPost = function(req, res) {
 }
 
 exports.getPosts = function(req, res) {
-	Post.find().sort('-date').exec(function(err, posts) {
+	Post.find().sort('date').exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -31,7 +31,7 @@ exports.getPosts = function(req, res) {
 }
 
 exports.getExcite = function(req, res) {
-	Post.find().sort('-date').where('genre.excite').equals(true).exec(function(err, posts) {
+	Post.find().sort('date').where('genre.excite').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -40,7 +40,7 @@ exports.getExcite = function(req, res) {
 }
 
 exports.getBounce = function(req, res) {
-	Post.find().sort('-date').where('genre.bounce').equals(true).exec(function(err, posts) {
+	Post.find().sort('date').where('genre.bounce').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -49,7 +49,7 @@ exports.getBounce = function(req, res) {
 }
 
 exports.getHeavy = function(req, res) {
-	Post.find().sort('-date').where('genre.heavy').equals(true).exec(function(err, posts) {
+	Post.find().sort('date').where('genre.heavy').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -58,7 +58,7 @@ exports.getHeavy = function(req, res) {
 }
 
 exports.getMellow = function(req, res) {
-	Post.find().sort('-date').where('genre.mellow').equals(true).exec(function(err, posts) {
+	Post.find().sort('date').where('genre.mellow').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -67,7 +67,7 @@ exports.getMellow = function(req, res) {
 }
 
 exports.getDaze = function(req, res) {
-	Post.find().sort('-date').where('genre.daze').equals(true).exec(function(err, posts) {
+	Post.find().sort('date').where('genre.daze').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
