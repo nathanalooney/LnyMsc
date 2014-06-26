@@ -5,6 +5,8 @@ exports.createPost = function(req, res) {
 	var post = new Post();
 	post.title = req.body.title;
 	post.artist = req.body.artist;
+	post.url = req.body.url;
+
 	post.genre.excite = req.body.excite;
 	post.genre.bounce = req.body.bounce;
 	post.genre.heavy = req.body.heavy;
@@ -15,7 +17,7 @@ exports.createPost = function(req, res) {
 		if (err) {
 			res.send(err);
 		}
-		res.json({message: 'Post created!'});
+		res.json({message: 'Post created!'+post.url});
 	});
 }
 

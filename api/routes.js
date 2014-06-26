@@ -3,7 +3,7 @@ var handlers = require('./handlers');
 
 module.exports = function(router) {
 
-router.route('/posts')
+router.route('/')
 	.post(handlers.createPost)
 	.get(handlers.getPosts);
 

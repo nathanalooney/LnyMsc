@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
-		<h1 id="logo"> LNYMSC </h1>
-		<div id="nav">
-			<div id="excite"> Excite </div>
-			<div id="bounce"> Bounce </div>
+		<h1 id="logo" class="text-center"> LNYMSC </h1>
+
+
+		<div class="row">
+			<div id="leftNav" class="col-lg-4"></div>
+			<div id="navColumn" class="col-lg-4">
+				<table id="nav" class="table">
+					<tr>
+						<td id="excite"> Excite </td>
+						<td id="bounce"> Bounce </td>
+						<td id="heavy"> Heavy </td>
+						<td id="mellow"> Mellow </td>
+						<td id="daze"> Daze </td>
+					</tr>
+				</table>
+			</div>
+			<div id="rightNav" class="col-lg-4"></div>
 		</div>
-		<div id="posts"> </div>
+
+		<div id="leftCol" class="col-lg-2"> </div>
+		<div id="posts" class="col-lg-8"> </div>
+		<div id="rightCol" class="col-lg-2"></div>
 	</body>
 		<script src="//connect.soundcloud.com/sdk.js"></script>
 		<script src="js/jquery.js"> </script>
