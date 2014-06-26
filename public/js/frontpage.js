@@ -7,7 +7,7 @@
 
 
 
-$.get('http://localhost:3000/api/posts', function(html) {
+$.get('/api/posts', function(html) {
 	for (i = 0; i<html.length; i++) {
 			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200}, function(oembed) {
 				$('#posts').append(oembed.html);
@@ -16,7 +16,7 @@ $.get('http://localhost:3000/api/posts', function(html) {
 });
 
 $('#logo').click(function() {
-	$.get('http://localhost:3000/api/posts', function(html) {
+	$.get('/api/posts', function(html) {
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
 			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200}, function(oembed) {
@@ -30,7 +30,7 @@ $('#logo').click(function() {
 
 
 $('#excite').click(function() {
-	$.get('http://localhost:3000/api/posts/excite', function(html) {
+	$.get('api/posts/excite', function(html) {
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
 			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200}, function(oembed) {
@@ -41,7 +41,7 @@ $('#excite').click(function() {
 });
 
 $('#bounce').click(function() {
-	$.get('http://localhost:3000/api/posts/bounce', function(html) {
+	$.get('api/posts/bounce', function(html) {
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
 			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200}, function(oembed) {
@@ -51,7 +51,7 @@ $('#bounce').click(function() {
 });
 
 $('#heavy').click(function() {
-	$.get('http://localhost:3000/api/posts/heavy', function(html) {
+	$.get('api/posts/heavy', function(html) {
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
 			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200}, function(oembed) {
@@ -62,7 +62,7 @@ $('#heavy').click(function() {
 
 
 $('#mellow').click(function() {
-	$.get('http://localhost:3000/api/posts/mellow', function(html) {
+	$.get('api/posts/mellow', function(html) {
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
 			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200}, function(oembed) {
@@ -73,7 +73,7 @@ $('#mellow').click(function() {
 });
 
 $('#daze').click(function() {
-	$.get('http://localhost:3000/api/posts/daze', function(html) {
+	$.get('api/posts/daze', function(html) {
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
 			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200}, function(oembed) {
