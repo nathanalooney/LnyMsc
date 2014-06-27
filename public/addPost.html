@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
 
-<h1> Add Song </h1>
+<div class="row">
+<div class="col-md-4"></div>
+<div class="col-md-4">
+	<h1> Add Song </h1>
 	<form>
 		<table>
 			<tr> <td> URL: <input type="text" id="url"> </td> </tr>
@@ -11,10 +18,18 @@
 			<tr> <td> Mellow <input type="checkbox" id="mellow"> </td> </tr>
 			<tr> <td> Daze <input type="checkbox" id="daze"> </td> </tr>
 			<tr> <td> Top: <input type="checkbox" id="top"> </td> </tr>
-			<tr> <tr> <div id="submit"> Submit </td> </tr>
+			<tr> <td> <div id="submit"> Submit </td> </tr>
 		</table>
 	</form>
-<script href="js/jquery.js"></script>
-<script href="js/addsong.js"></script>
+</div>
+<div class="col-md-4"></div>
+</div>
+
+
+
+</body>
+<script src="//connect.soundcloud.com/sdk.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/addsong.js"></script>
 </html>
 

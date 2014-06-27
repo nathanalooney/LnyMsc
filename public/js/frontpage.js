@@ -9,7 +9,7 @@ client_id: "328ae5752ec4b2ff5d3c89f27a34fa14"
 
 $.get('/api/posts', function(html) {
 	for (i = 0; i<html.length; i++) {
-			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200, color: '42eda4'}, function(oembed) {
+			SC.oEmbed(html[i].url, {auto_play: false, maxheight: 200, color: "42eda4"}, function(oembed) {
 				$('#posts').append(oembed.html);
 			});
 	}
