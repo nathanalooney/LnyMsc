@@ -21,17 +21,26 @@ exports.createPost = function(req, res) {
 	});
 }
 
+/*exports.addSong = function(req, res) {
+
+}
+*/
+
 exports.getPosts = function(req, res) {
-	Post.find().sort('date').exec(function(err, posts) {
+	var page = req.param('page');
+	if (page=='undefined') page = 0;
+
+	Post.find().sort('-time').exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
 		res.json(posts);
+		console.log(req.param('page'));
 	});
 }
 
 exports.getExcite = function(req, res) {
-	Post.find().sort('date').where('genre.excite').equals(true).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.excite').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -40,7 +49,7 @@ exports.getExcite = function(req, res) {
 }
 
 exports.getBounce = function(req, res) {
-	Post.find().sort('date').where('genre.bounce').equals(true).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.bounce').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -49,7 +58,7 @@ exports.getBounce = function(req, res) {
 }
 
 exports.getHeavy = function(req, res) {
-	Post.find().sort('date').where('genre.heavy').equals(true).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.heavy').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -58,7 +67,7 @@ exports.getHeavy = function(req, res) {
 }
 
 exports.getMellow = function(req, res) {
-	Post.find().sort('date').where('genre.mellow').equals(true).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.mellow').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -67,7 +76,7 @@ exports.getMellow = function(req, res) {
 }
 
 exports.getDaze = function(req, res) {
-	Post.find().sort('date').where('genre.daze').equals(true).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.daze').equals(true).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}

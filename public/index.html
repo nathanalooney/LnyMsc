@@ -2,21 +2,28 @@
 <html>
 	<head>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<style> 
+			body
+			{
+			background-image:url('imgs/halftone.png');
+
+			}
+		</style>
 	</head>
 	<body>
-		<h1 id="logo" class="text-center" style="cursor: pointer"> LNYMSC </h1>
+		<h1 id="logo" class="text-center" style="cursor: pointer"> LNY/MSC </h1>
 
 
-		<div class="row">
+		<div class="row" id="topBar">
 			<div id="leftNav" class="col-lg-4"></div>
 			<div id="navColumn" class="col-lg-4">
-				<table id="nav" class="table">
+				<table id="nav" class="table" class="text-center">
 					<tr>
-						<td id="excite" style="cursor: pointer"> Excite </td>
-						<td id="bounce" style="cursor: pointer"> Bounce </td>
-						<td id="heavy" style="cursor: pointer"> Heavy </td>
-						<td id="mellow" style="cursor: pointer"> Mellow </td>
-						<td id="daze" style="cursor: pointer"> Daze </td>
+						<td align="center" id="excite" style="cursor: pointer"> Excite </td>
+						<td align="center" id="bounce" style="cursor: pointer"> Bounce </td>
+						<td align="center" id="heavy" style="cursor: pointer"> Heavy </td>
+						<td align="center" id="mellow" style="cursor: pointer"> Mellow </td>
+						<td align="center" id="daze" style="cursor: pointer"> Daze </td>
 					</tr>
 				</table>
 			</div>
@@ -29,5 +36,6 @@
 	</body>
 		<script src="//connect.soundcloud.com/sdk.js"></script>
 		<script src="js/jquery.js"> </script>
+		<script src="js/pageless.js"></script>
 		<script src="js/frontpage.js"></script>
 </html>
