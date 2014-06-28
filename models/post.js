@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
 	title: String,
-	artist: String,
-	url: String,
+	embed: String,
 	genre: {
 		excite: Boolean,
 		bounce: Boolean,

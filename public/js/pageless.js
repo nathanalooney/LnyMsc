@@ -237,7 +237,7 @@
           if (loader) {
             loader.before(data);
           } else {
-//            element.append(data);
+            element.append(data);
           }
           loading(false);
           // if there is a complete callback we call it

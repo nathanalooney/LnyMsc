@@ -4,9 +4,7 @@ var Post = mongoose.model('Post');
 exports.createPost = function(req, res) {
 	var post = new Post();
 	post.title = req.body.title;
-	post.artist = req.body.artist;
-	post.url = req.body.url;
-
+	post.embed = req.body.embed;
 	post.genre.excite = req.body.excite;
 	post.genre.bounce = req.body.bounce;
 	post.genre.heavy = req.body.heavy;
@@ -28,19 +26,26 @@ exports.createPost = function(req, res) {
 
 exports.getPosts = function(req, res) {
 	var page = req.param('page');
-	if (page=='undefined') page = 0;
+	var limit = req.param('limit');
+	var offset = req.param('offset');
+	var skip = page*3;
 
-	Post.find().sort('-time').exec(function(err, posts) {
+	skip=parseInt(skip) + parseInt(offset);
+	console.log(skip);
+
+	Post.find().sort('-time').skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
 		res.json(posts);
-		console.log(req.param('page'));
 	});
 }
 
 exports.getExcite = function(req, res) {
-	Post.find().sort('-time').where('genre.excite').equals(true).exec(function(err, posts) {
+	var page = req.param('page');
+	var limit = req.param('limit');
+	var offset = req.param('offset');
+	Post.find().sort('-time').where('genre.excite').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -49,7 +54,10 @@ exports.getExcite = function(req, res) {
 }
 
 exports.getBounce = function(req, res) {
-	Post.find().sort('-time').where('genre.bounce').equals(true).exec(function(err, posts) {
+	var page = req.param('page');
+	var limit = req.param('limit');
+	var offset = req.param('offset');
+	Post.find().sort('-time').where('genre.bounce').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -58,7 +66,10 @@ exports.getBounce = function(req, res) {
 }
 
 exports.getHeavy = function(req, res) {
-	Post.find().sort('-time').where('genre.heavy').equals(true).exec(function(err, posts) {
+	var page = req.param('page');
+	var limit = req.param('limit');
+	var offset = req.param('offset');
+	Post.find().sort('-time').where('genre.heavy').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -67,7 +78,10 @@ exports.getHeavy = function(req, res) {
 }
 
 exports.getMellow = function(req, res) {
-	Post.find().sort('-time').where('genre.mellow').equals(true).exec(function(err, posts) {
+	var page = req.param('page');
+	var limit = req.param('limit');
+	var offset = req.param('offset');
+	Post.find().sort('-time').where('genre.mellow').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -76,7 +90,10 @@ exports.getMellow = function(req, res) {
 }
 
 exports.getDaze = function(req, res) {
-	Post.find().sort('-time').where('genre.daze').equals(true).exec(function(err, posts) {
+	var page = req.param('page');
+	var limit = req.param('limit');
+	var offset = req.param('offset');
+	Post.find().sort('-time').where('genre.daze').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
