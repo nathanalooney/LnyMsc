@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
+	url: String,
 	title: String,
 	embed: String,
 	genre: {

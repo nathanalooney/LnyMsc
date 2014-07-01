@@ -10,10 +10,14 @@ exports.createPost = function(req, res) {
 	post.genre.mellow = req.body.mellow;
 	post.genre.daze = req.body.daze;
 	post.favorite = req.body.favorite;
+	post.url = req.body.url;
 
 	//console.log("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments-false");
 
 	request("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments=false", function(error, response, body) {
+		if(error) {
+			res.json({message: "Error in request."});
+		}
 		var song = JSON.parse(body);
 		post.embed = song['html'];
 		post.title = song['title'];
