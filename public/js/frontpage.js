@@ -1,69 +1,92 @@
 var currentGenre = ""; 
 var page = 0;
 
-
-SC.initialize({
-client_id: "328ae5752ec4b2ff5d3c89f27a34fa14"
-});
+var changeFontColor = function() {
+	$('td').each(function() {
+		$(this).css("color", "#333333");
+	});
+}
 
 
 $('#logo').click(function() {
-	$.get('/api/posts', function(html) {
+	$.get('/api/posts', {page: 0, limit: 6, offset: 0}, function(html) {
+		page = 0;
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
-			$('#posts').append(html[i].embed);
-		}
+					$('#posts').append(html[i].embed);
+					console.log(html[i].embed);
+					}
 		currentGenre="";
 	});
 });
 
 $('#excite').click(function() {
-	$.get('api/posts/excite', function(html) {
+	$.get('/api/posts/excite', {page: 0, limit: 6, offset: 0}, function(html) {
+		page = 0;
 		$('#posts').empty();
+		changeFontColor();
+		$('#excite').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
-			$('#posts').append(html[i].embed);
-		}
+					$('#posts').append(html[i].embed);
+					console.log(html[i].embed);
+					}
 		currentGenre="excite";
 	});
 });
 
 $('#bounce').click(function() {
-	$.get('api/posts/bounce', function(html) {
+	$.get('/api/posts/bounce', {page: 0, limit: 6, offset: 0}, function(html) {
+		page = 0;
 		$('#posts').empty();
+		changeFontColor();
+		$('#bounce').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
-			$('#posts').append(html[i].embed);	
-		}
+					$('#posts').append(html[i].embed);
+					console.log(html[i].embed);
+					}
 		currentGenre="bounce";
 	});
 });
 
 $('#heavy').click(function() {
-	$.get('api/posts/heavy', function(html) {
+	$.get('/api/posts/heavy', {page: 0, limit: 6, offset: 0}, function(html) {
+		page = 0;
 		$('#posts').empty();
+		changeFontColor();
+		$('#heavy').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
-			$('#posts').append(html[i].embed);
-		}
+					$('#posts').append(html[i].embed);
+					console.log(html[i].embed);
+					}
 		currentGenre="heavy";
 	});
 });
 
 
 $('#mellow').click(function() {
-	$.get('api/posts/mellow', function(html) {
+	$.get('/api/posts/mellow', {page: 0, limit: 6, offset: 0}, function(html) {
+		page = 0;
 		$('#posts').empty();
+		changeFontColor();
+		$('#mellow').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
-			$('#posts').append(html[i].embed);
-		}
+					$('#posts').append(html[i].embed);
+					console.log(html[i].embed);
+					}
 		currentGenre="mellow";
 	});
 });
 
 $('#daze').click(function() {
-	$.get('api/posts/daze', function(html) {
+	$.get('/api/posts/daze', {page: 0, limit: 6, offset: 0}, function(html) {
+		page = 0;
 		$('#posts').empty();
+		changeFontColor();
+		$('#daze').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
-			$('#posts').append(html[i].embed);
-		}
+					$('#posts').append(html[i].embed);
+					console.log(html[i].embed);
+					}
 		currentGenre="daze";
 	});
 });
@@ -78,26 +101,26 @@ $(document).ready(function(){
 					}
 	});
 
-	$.fn.scrollStopped = function(callback) {           
+/*	$.fn.scrollStopped = function(callback) {           
 	        $(this).scroll(function(){
 	            var self = this, $this = $(self);
 	            if ($this.data('scrollTimeout')) {
 	              clearTimeout($this.data('scrollTimeout'));
 	            }
-	            $this.data('scrollTimeout', setTimeout(callback,250,self));
+	            $this.data('scrollTimeout', setTimeout(callback, 250, self));
 	        });
-	    };
-
-	$(window).scrollStopped(function(){
-		if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+	    };*/
+	$(window).scroll(function() {
+		if($(window).scrollTop() + $(window).height() > $(document).height() - 150) {
 			page+=1;
 			$.get('api/posts/'+currentGenre, {page: page, limit: 3, offset: 6}, function(html) {
 				console.log(html);
 			for (i = 0; i<html.length; i++) {
 				$('#posts').append(html[i].embed);
-			}
-	   	});
-	}
+				}
+	   		});
+		}
 	});
+
 });
 

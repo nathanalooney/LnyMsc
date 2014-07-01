@@ -11,9 +11,7 @@ exports.createPost = function(req, res) {
 	post.genre.daze = req.body.daze;
 	post.favorite = req.body.favorite;
 	post.url = req.body.url;
-
 	//console.log("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments-false");
-
 	request("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments=false", function(error, response, body) {
 		if(error) {
 			res.json({message: "Error in request."});
@@ -40,9 +38,7 @@ exports.getPosts = function(req, res) {
 	var limit = req.param('limit');
 	var offset = req.param('offset');
 	var skip = page*3;
-
 	skip=parseInt(skip) + parseInt(offset);
-	console.log(skip);
 
 	Post.find().sort('-time').skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
@@ -56,7 +52,10 @@ exports.getExcite = function(req, res) {
 	var page = req.param('page');
 	var limit = req.param('limit');
 	var offset = req.param('offset');
-	Post.find().sort('-time').where('genre.excite').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
+	var skip = page*3;
+	skip=parseInt(skip) + parseInt(offset);
+
+	Post.find().sort('-time').where('genre.excite').skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -68,7 +67,10 @@ exports.getBounce = function(req, res) {
 	var page = req.param('page');
 	var limit = req.param('limit');
 	var offset = req.param('offset');
-	Post.find().sort('-time').where('genre.bounce').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
+	var skip = page*3;
+	skip=parseInt(skip) + parseInt(offset);
+
+	Post.find().sort('-time').where('genre.bounce').skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -80,7 +82,10 @@ exports.getHeavy = function(req, res) {
 	var page = req.param('page');
 	var limit = req.param('limit');
 	var offset = req.param('offset');
-	Post.find().sort('-time').where('genre.heavy').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
+	var skip = page*3;
+	skip=parseInt(skip) + parseInt(offset);
+
+	Post.find().sort('-time').where('genre.heavy').skip(skip).limit(limit).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -92,7 +97,10 @@ exports.getMellow = function(req, res) {
 	var page = req.param('page');
 	var limit = req.param('limit');
 	var offset = req.param('offset');
-	Post.find().sort('-time').where('genre.mellow').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
+	var skip = page*3;
+	skip=parseInt(skip) + parseInt(offset);
+
+	Post.find().sort('-time').where('genre.mellow').skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -104,7 +112,10 @@ exports.getDaze = function(req, res) {
 	var page = req.param('page');
 	var limit = req.param('limit');
 	var offset = req.param('offset');
-	Post.find().sort('-time').where('genre.daze').equals(true).skip((page*3)+offset).limit(limit).exec(function(err, posts) {
+	var skip = page*3;
+	skip=parseInt(skip) + parseInt(offset);
+
+	Post.find().sort('-time').where('genre.daze').skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
