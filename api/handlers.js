@@ -4,14 +4,14 @@ var request = require('request');
 
 exports.createPost = function(req, res) {
 	var post = new Post();
-	post.genre.excite = req.body.info.excite;
-	post.genre.bounce = req.body.info.bounce;
-	post.genre.heavy = req.body.info.heavy;
-	post.genre.mellow = req.body.info.mellow;
-	post.genre.daze = req.body.info.daze;
+	post.genre.excite = req.body.excite;
+	post.genre.bounce = req.body.bounce;
+	post.genre.heavy = req.body.heavy;
+	post.genre.mellow = req.body.mellow;
+	post.genre.daze = req.body.daze;
+	post.favorite = req.body.favorite;
 
 	//console.log("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments-false");
-
 
 	request("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments=false", function(error, response, body) {
 		var song = JSON.parse(body);
