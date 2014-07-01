@@ -55,7 +55,7 @@ exports.getExcite = function(req, res) {
 	var skip = page*3;
 	skip=parseInt(skip) + parseInt(offset);
 
-	Post.find().sort('-time').where('genre.excite').skip(skip).limit(limit).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.excite').equals(true).skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -70,7 +70,7 @@ exports.getBounce = function(req, res) {
 	var skip = page*3;
 	skip=parseInt(skip) + parseInt(offset);
 
-	Post.find().sort('-time').where('genre.bounce').skip(skip).limit(limit).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.bounce').equals(true).skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -85,7 +85,7 @@ exports.getHeavy = function(req, res) {
 	var skip = page*3;
 	skip=parseInt(skip) + parseInt(offset);
 
-	Post.find().sort('-time').where('genre.heavy').skip(skip).limit(limit).limit(limit).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.heavy').equals(true).skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -100,7 +100,7 @@ exports.getMellow = function(req, res) {
 	var skip = page*3;
 	skip=parseInt(skip) + parseInt(offset);
 
-	Post.find().sort('-time').where('genre.mellow').skip(skip).limit(limit).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.mellow').equals(true).skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
@@ -115,7 +115,7 @@ exports.getDaze = function(req, res) {
 	var skip = page*3;
 	skip=parseInt(skip) + parseInt(offset);
 
-	Post.find().sort('-time').where('genre.daze').skip(skip).limit(limit).exec(function(err, posts) {
+	Post.find().sort('-time').where('genre.daze').equals(true).skip(skip).limit(limit).exec(function(err, posts) {
 		if (err) {
 			res.send(err);
 		}
