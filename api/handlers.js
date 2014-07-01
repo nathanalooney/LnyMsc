@@ -1,22 +1,29 @@
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
+var request = require('request');
 
 exports.createPost = function(req, res) {
 	var post = new Post();
-	post.title = req.body.title;
-	post.embed = req.body.embed;
-	post.genre.excite = req.body.excite;
-	post.genre.bounce = req.body.bounce;
-	post.genre.heavy = req.body.heavy;
-	post.genre.mellow = req.body.mellow;
-	post.genre.daze = req.body.daze;
+	post.genre.excite = req.body.info.excite;
+	post.genre.bounce = req.body.info.bounce;
+	post.genre.heavy = req.body.info.heavy;
+	post.genre.mellow = req.body.info.mellow;
+	post.genre.daze = req.body.info.daze;
 
-	post.save(function(err) {
-		if (err) {
-			res.send(err);
-		}
-		res.json({message: 'Post created!'+post.url});
-	});
+	//console.log("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments-false");
+
+
+	request("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments=false", function(error, response, body) {
+		var song = JSON.parse(body);
+		post.embed = song['html'];
+		post.title = song['title'];
+		post.save(function(err) {
+			if (err) {
+				res.send(err);
+			}
+			res.json({message: 'Post created!: ' + post.title});
+			});
+		});
 }
 
 /*exports.addSong = function(req, res) {
