@@ -13,7 +13,7 @@ exports.createPost = function(req, res) {
 
 	//console.log("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments-false");
 
-	request("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments=false", function(error, response, body) {
+/*	request("http://soundcloud.com/oembed?format=json&url="+req.body.url+"&maxheight=200&show_comments=false", function(error, response, body) {
 		var song = JSON.parse(body);
 		post.embed = song['html'];
 		post.title = song['title'];
@@ -23,7 +23,7 @@ exports.createPost = function(req, res) {
 			}
 			res.json({message: 'Post created!: ' + post.title});
 			});
-		});
+		});*/
 }
 
 /*exports.addSong = function(req, res) {
