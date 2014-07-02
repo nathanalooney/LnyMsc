@@ -14,7 +14,6 @@ $('#logo').click(function() {
 		$('#posts').empty();
 		for (i = 0; i<html.length; i++) {
 					$('#posts').append(html[i].embed);
-					console.log(html[i].embed);
 					}
 		currentGenre="";
 	});
@@ -28,7 +27,6 @@ $('#excite').click(function() {
 		$('#excite').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
 					$('#posts').append(html[i].embed);
-					console.log(html[i].embed);
 					}
 		currentGenre="excite";
 	});
@@ -42,7 +40,6 @@ $('#bounce').click(function() {
 		$('#bounce').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
 					$('#posts').append(html[i].embed);
-					console.log(html[i].embed);
 					}
 		currentGenre="bounce";
 	});
@@ -56,7 +53,6 @@ $('#heavy').click(function() {
 		$('#heavy').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
 					$('#posts').append(html[i].embed);
-					console.log(html[i].embed);
 					}
 		currentGenre="heavy";
 	});
@@ -71,7 +67,6 @@ $('#mellow').click(function() {
 		$('#mellow').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
 					$('#posts').append(html[i].embed);
-					console.log(html[i].embed);
 					}
 		currentGenre="mellow";
 	});
@@ -85,7 +80,6 @@ $('#daze').click(function() {
 		$('#daze').css("color", "#ff4400");
 		for (i = 0; i<html.length; i++) {
 					$('#posts').append(html[i].embed);
-					console.log(html[i].embed);
 					}
 		currentGenre="daze";
 	});
@@ -94,33 +88,35 @@ $('#daze').click(function() {
 
 $(document).ready(function(){
 
+
+	  SC.initialize({
+	    client_id: "328ae5752ec4b2ff5d3c89f27a34fa14",
+	  });
+
+
 	$.get('/api/posts', {page: 0, limit: 6, offset: 0}, function(html) {
 		for (i = 0; i<html.length; i++) {
 					$('#posts').append(html[i].embed);
-					console.log(html[i].embed);
 					}
+		var iframeElement   = document.querySelector('iframe');
+		var widget1         = SC.Widget(iframeElement);
+		widget1.play();
 	});
 
-/*	$.fn.scrollStopped = function(callback) {           
-	        $(this).scroll(function(){
-	            var self = this, $this = $(self);
-	            if ($this.data('scrollTimeout')) {
-	              clearTimeout($this.data('scrollTimeout'));
-	            }
-	            $this.data('scrollTimeout', setTimeout(callback, 250, self));
-	        });
-	    };*/
+
+
+
 	$(window).scroll(function() {
 		if($(window).scrollTop() + $(window).height() > $(document).height() - 150) {
 			page+=1;
 			$.get('api/posts/'+currentGenre, {page: page, limit: 3, offset: 6}, function(html) {
-				console.log(html);
 			for (i = 0; i<html.length; i++) {
 				$('#posts').append(html[i].embed);
 				}
 	   		});
 		}
 	});
+
 
 });
 
