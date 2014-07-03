@@ -238,5 +238,13 @@ $(document).ready(function(){
 	$(window).on('scroll', scrollLoad);
 	}, 500);
 
+	var ua = navigator.userAgent.toLowerCase(); 
+	  if (ua.indexOf('safari') != -1) { 
+	    if (ua.indexOf('chrome') > -1) {
+	      alert("1") // Chrome
+	    } else {
+	      alert("In order to play widget audio, you must go to Safari >> Preferences >> Advanced >> \"Stop plug-ins to save power\" and uncheck the corresponding box.");
+	    }
+	  }
 
 });
