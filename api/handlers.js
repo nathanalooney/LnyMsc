@@ -123,6 +123,21 @@ exports.getDaze = function(req, res) {
 	});
 }
 
+exports.getBest = function(req, res) {
+	var page = req.param('page');
+	var limit = req.param('limit');
+	var offset = req.param('offset');
+	var skip = page*3;
+	skip=parseInt(skip) + parseInt(offset);
+
+	Post.find().sort('-time').where('favorite').equals(true).skip(skip).limit(limit).exec(function(err, posts) {
+		if (err) {
+			res.send(err);
+		}
+		res.json(posts);
+	});
+}
+
 exports.getPost = function(req, res) {
 	Post.findById(req.params.post_id, function(err, post) {
 		if (err) {

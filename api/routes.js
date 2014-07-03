@@ -24,4 +24,7 @@ router.route('/mellow')
 
 router.route('/daze')
 	.get(handlers.getDaze);
+
+router.route('/best')
+	.get(handlers.getBest);
 }
