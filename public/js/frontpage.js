@@ -25,16 +25,15 @@ var setTriggerLoad = function() {
 	widgetObjs[widgetObjs.length-2].bind(SC.Widget.Events.FINISH, function() {
 		loadNextPosts();
 	});
-	widgetObjs[widgetObjs.length-1].bind(SC.Widget.Events.FINISH, function() {
+/*	widgetObjs[widgetObjs.length-1].bind(SC.Widget.Events.FINISH, function() {
 		loadNextPosts();
-	});
+	});*/
 }
 
 var linkNextPosts = function(callback) {
-	console.log(widgetObjs.length);
 	widgetObjs[widgetObjs.length-5].unbind(SC.Widget.Events.FINISH);
 	widgetObjs[widgetObjs.length-4].unbind(SC.Widget.Events.FINISH);
-	for(var i = widgetObjs.length-4; i < widgetObjs.length; i++) {
+	for(var i = widgetObjs.length-5; i < widgetObjs.length-1; i++) {
 			if(i==widgetObjs.length-2) {
 				setTriggerLoad();
 			}
@@ -187,6 +186,7 @@ $('#daze').click(function() {
 	});
 });
 
+
 $('#best').click(function() {
 	if(currentGenre=="best") return;
 	widgetObjs = [];
@@ -204,6 +204,17 @@ $('#best').click(function() {
 });
 
 
+var scrollLoad = function() {
+	if($(window).scrollTop() + $(window).height() > $(document).height() - 300) {
+			$(window).off('scroll');
+			console.log("Listener is off!");
+			loadNextPosts();
+			setTimeout(function() {
+				$(window).on('scroll', scrollLoad);
+				console.log("Listener is back!")
+			}, 100);
+	}
+}
 
 
 $(document).ready(function(){
@@ -223,11 +234,9 @@ $(document).ready(function(){
 			bindTwo(widgetObjs[i], widgetObjs[i+1]);
 		}
 	});
+	setTimeout(function() {
+	$(window).on('scroll', scrollLoad);
+	}, 500);
 
 
-	$(window).scroll(function() {
-		if($(window).scrollTop() + $(window).height() > $(document).height() - 150) {
-				loadNextPosts();
-		}
-	});
 });
