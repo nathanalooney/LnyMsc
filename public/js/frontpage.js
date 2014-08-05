@@ -216,7 +216,6 @@ var scrollLoad = function() {
 	}
 }
 
-
 $(document).ready(function(){
 	$('#front').css("color", "#ff4400");
 	$.get('/api/posts', {page: 0, limit: 6, offset: 0}, function(html) {
@@ -237,6 +236,4 @@ $(document).ready(function(){
 	setTimeout(function() {
 	$(window).on('scroll', scrollLoad);
 	}, 500);
-
-
 });

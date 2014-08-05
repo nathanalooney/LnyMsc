@@ -7,6 +7,9 @@ router.route('/')
 	.post(handlers.createPost)
 	.get(handlers.getPosts);
 
+router.route('/all')
+	.get(handlers.getPosts);
+
 router.route('/posts/:post_id')
 	.get(handlers.getPost);
 
