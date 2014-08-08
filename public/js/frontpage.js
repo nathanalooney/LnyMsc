@@ -1,250 +1,288 @@
-var currentGenre = ""; 
-var page = 0;
-var widgetObjs = [];
-
+var player = {
+    song: {
+        prev: null,
+        curr: null,
+        next: null
+    },
+    currentGenre: "all",
+    playlist: {
+        all: [],
+        excite: [],
+        bounce: [],
+        heavy: [],
+        mellow: [],
+        daze: [],
+        best: []
+    },
+    initialized: {
+        all: true,
+        excite: false,
+        bounce: false,
+        heavy: false,
+        mellow: false,
+        daze: false,
+        best: false
+    },
+    page: {
+        all: 0,
+        excite: 0,
+        bounce: 0,
+        heavy: 0,
+        mellow: 0,
+        daze: 0,
+        best: 0
+    }
+}
 
 SC.initialize({
-client_id: "328ae5752ec4b2ff5d3c89f27a34fa14",
+    client_id: "328ae5752ec4b2ff5d3c89f27a34fa14",
 });
 
+var loadInitial = function() {
+    $('#front').css("color", "#ff4400");
+    var currentPlaylist = player.playlist[player.currentGenre];
+    var currentPosts = '#' + player.currentGenre + 'Posts';
+    $.get('/api/posts/' + player.currentGenre, {
+        page: 0,
+        limit: 6,
+        offset: 0
+    }, function(html) {
+        // Fill page with iframe elements.
+        for (i = 0; i < html.length; i++) {
+            $(currentPosts).append(html[i].embed);
+        }
+        // Populate player.playlist object with widgets.
+        var widgets = $(currentPosts).children('iframe')
+        for (var i = 0; i < widgets.length; i++) {
+            currentPlaylist[i] = SC.Widget(widgets[i]);
+        }
+        player.song.curr = currentPlaylist[0];
+        // Set up autoplay for initial songs.
+        for (var i = 0; i < currentPlaylist.length - 1; i++) {
+            if (i == currentPlaylist.length - 2) {
+                setTrigger(currentPlaylist[i]);
+            }
+            bindWidgets(currentPlaylist[i - 1], currentPlaylist[i], currentPlaylist[i + 1]);
+        }
+    });
+}
 
+var loadPosts = function() {
+    player.page[player.currentGenre] += 1;
+    var currentPlaylist = player.playlist[player.currentGenre];
+    var currentPosts = '#' + player.currentGenre + 'Posts';
+    $.get('api/posts/' + player.currentGenre, {
+        page: player.page[player.currentGenre],
+        limit: 3,
+        offset: 6
+    }, function(html) {
+        for (i = 0; i < html.length; i++) {
+            $(currentPosts).append(html[i].embed);
+            currentPlaylist.push(SC.Widget($(currentPosts).children('iframe').last()[0]));
+        }
+        var lastWidgets = currentPlaylist.slice(-5);
+        lastWidgets[0].unbind(SC.Widget.Events.FINISH);
+        lastWidgets[0].unbind(SC.Widget.Events.PAUSE);
+        setTrigger(lastWidgets[3]);
+        for (i = 1; i < lastWidgets.length - 1; i++) {
+            bindWidgets(lastWidgets[i - 1], lastWidgets[i], lastWidgets[i + 1]);
+        }
+    });
+}
+
+var setTrigger = function(widget) {
+    widget.bind(SC.Widget.Events.PAUSE, function() {
+        loadPosts();
+    });
+    widget.bind(SC.Widget.Events.FINISH, function() {
+        loadPosts();
+    });
+}
+
+var bindWidgets = function(prev, curr, next) {
+    curr.bind(SC.Widget.Events.PLAY, function() {
+        $('#playPause').html('<span class="glyphicon glyphicon-pause">');
+        player.song.prev = prev;
+        player.song.curr = curr;
+        player.song.next = next;
+        player.song.curr.getCurrentSound(function(sound) {
+            var title = sound.title;
+            $('#songTitle').html(title.slice(0, 30));
+        });
+    });
+    curr.bind(SC.Widget.Events.PAUSE, function() {
+        player.song.curr.isPaused(function(resp) {
+            if (resp) {
+                $('#playPause').html('<span class="glyphicon glyphicon-play">');
+            }
+        });
+    });
+    curr.bind(SC.Widget.Events.FINISH, function() {
+        next.play();
+    });
+}
+
+var hidePosts = function() {
+    $('#centeredContent').children().each(function() {
+        if ($(this).is(':visible')) {
+            $(this).hide(400, 'swing');
+        }
+    });
+}
 
 var changeFontColor = function() {
-	$('td').each(function() {
-		$(this).css("color", "#333333");
-	});
+    $('td').each(function() {
+        $(this).css("color", "#333333");
+    });
 }
 
-var bindTwo = function(curr, next) {
-	curr.bind(SC.Widget.Events.FINISH, function() {
-		next.play();
-	});
+var scrollLoad = function() {
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - 300) {
+        $(window).off('scroll');
+        loadPosts();
+        setTimeout(function() {
+            $(window).on('scroll', scrollLoad);
+        }, 500);
+    }
 }
-
-var setTriggerLoad = function() {
-	widgetObjs[widgetObjs.length-2].bind(SC.Widget.Events.FINISH, function() {
-		loadNextPosts();
-	});
-/*	widgetObjs[widgetObjs.length-1].bind(SC.Widget.Events.FINISH, function() {
-		loadNextPosts();
-	});*/
-}
-
-var linkNextPosts = function(callback) {
-	widgetObjs[widgetObjs.length-5].unbind(SC.Widget.Events.FINISH);
-	widgetObjs[widgetObjs.length-4].unbind(SC.Widget.Events.FINISH);
-	for(var i = widgetObjs.length-5; i < widgetObjs.length-1; i++) {
-			if(i==widgetObjs.length-2) {
-				setTriggerLoad();
-			}
-		bindTwo(widgetObjs[i], widgetObjs[i+1]);			
-	}
-	if(typeof callback == "function") {
-		callback();
-	}
-}
-
-var loadNextPosts = function() {
-	page+=1;
-	$.get('api/posts/'+currentGenre, {page: page, limit: 3, offset: 6}, function(html) {
-		for (i = 0; i<html.length; i++) {
-			$('#posts').append(html[i].embed);
-			widgetObjs.push(SC.Widget($('iframe:last')[0]));
-		}
-		linkNextPosts();
-	});
-}
-
-
-var setAutoPlay = function() {
-		var widgets = $('iframe').toArray();
-
-		for (var i=0; i<widgets.length; i++) {
-			widgetObjs[i] = SC.Widget(widgets[i]);
-		}	
-
-		for (var i=0; i<widgetObjs.length; i++) {
-			if(i==widgetObjs.length-2) {
-				setTriggerLoad();
-			}
-			bindTwo(widgetObjs[i], widgetObjs[i+1]);
-		}
-}
-
-
-$('#logo').click(function() {
-	if(currentGenre=="") return;
-	widgetObjs = [];
-	widgetObjs = [];
-	$.get('/api/posts', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		changeFontColor();
-		$('#front').css("color", "#ff4400");
-		$('#posts').empty();
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="";
-		setAutoPlay();
-	});
-});
-
-$('#front').click(function() {
-	if(currentGenre=="") return;
-	widgetObjs = [];
-	$.get('/api/posts', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		changeFontColor();
-		$('#posts').empty();
-		$('#front').css("color", "#ff4400");
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="";
-		setAutoPlay();
-	});
-});
 
 $('#excite').click(function() {
-	if(currentGenre=="excite") return;
-	widgetObjs = [];
-	$.get('/api/posts/excite', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		$('#posts').empty();
-		changeFontColor();
-		$('#excite').css("color", "#ff4400");
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="excite";
-		setAutoPlay();
-	});
+    player.currentGenre = 'excite';
+    hidePosts();
+    changeFontColor();
+    $('#excite').css('color', '#ff4400');
+    if (player.initialized.excite == false) {
+        $('#excitePosts').show(400, 'swing', function() {
+            loadInitial();
+            player.initialized.excite = true;
+        });
+    } else {
+        $('#excitePosts').show(400, 'swing');
+    }
 });
 
 $('#bounce').click(function() {
-	if(currentGenre=="bounce") return;
-	widgetObjs = [];
-	$.get('/api/posts/bounce', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		$('#posts').empty();
-		changeFontColor();
-		$('#bounce').css("color", "#ff4400");
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="bounce";
-		setAutoPlay();
-	});
+    player.currentGenre = 'bounce';
+    hidePosts();
+    changeFontColor();
+    $('#bounce').css('color', '#ff4400');
+    if (player.initialized.bounce == false) {
+        $('#bouncePosts').show(400, 'swing', function() {
+            loadInitial();
+            player.initialized.bounce = true;
+        });
+    } else {
+        $('#bouncePosts').show(400, 'swing');
+    }
 });
 
 $('#heavy').click(function() {
-	if(currentGenre=="heavy") return;
-	widgetObjs = [];
-	$.get('/api/posts/heavy', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		$('#posts').empty();
-		changeFontColor();
-		$('#heavy').css("color", "#ff4400");
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="heavy";
-		setAutoPlay();
-	});
+    player.currentGenre = 'heavy';
+    hidePosts();
+    changeFontColor();
+    $('#heavy').css('color', '#ff4400');
+    if (player.initialized.heavy == false) {
+        $('#heavyPosts').show(400, 'swing', function() {
+            loadInitial();
+            player.initialized.heavy = true;
+        });
+    } else {
+        $('#heavyPosts').show(400, 'swing');
+    }
 });
 
-
 $('#mellow').click(function() {
-	if(currentGenre=="mellow") return;
-	widgetObjs = [];
-	$.get('/api/posts/mellow', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		$('#posts').empty();
-		changeFontColor();
-		$('#mellow').css("color", "#ff4400");
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="mellow";
-		setAutoPlay();
-	});
+    player.currentGenre = 'mellow';
+    hidePosts();
+    changeFontColor();
+    $('#mellow').css('color', '#ff4400');
+    if (player.initialized.mellow == false) {
+        $('#mellowPosts').show(400, 'swing', function() {
+            loadInitial();
+            player.initialized.mellow = true;
+        });
+    } else {
+        $('#mellowPosts').show(400, 'swing');
+    }
 });
 
 $('#daze').click(function() {
-	if(currentGenre=="daze") return;
-	widgetObjs = [];
-	$.get('/api/posts/daze', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		$('#posts').empty();
-		changeFontColor();
-		$('#daze').css("color", "#ff4400");
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="daze";
-		setAutoPlay();
-	});
+    player.currentGenre = 'daze';
+    hidePosts();
+    changeFontColor();
+    $('#daze').css('color', '#ff4400');
+    if (player.initialized.daze == false) {
+        hidePosts();
+        $('#dazePosts').show(400, 'swing', function() {
+            loadInitial();
+            player.initialized.daze = true;
+        });
+    } else {
+        $('#dazePosts').show(400, 'swing');
+    }
 });
-
 
 $('#best').click(function() {
-	if(currentGenre=="best") return;
-	widgetObjs = [];
-	$.get('/api/posts/best', {page: 0, limit: 6, offset: 0}, function(html) {
-		page = 0;
-		$('#posts').empty();
-		changeFontColor();
-		$('#best').css("color", "#ff4400");
-		for (i = 0; i<html.length; i++) {
-					$('#posts').append(html[i].embed);
-					}
-		currentGenre="best";
-		setAutoPlay();
-	});
+    player.currentGenre = 'best';
+    hidePosts();
+    changeFontColor();
+    $('#best').css('color', '#ff4400');
+    if (player.initialized.best == false) {
+        hidePosts();
+        $('#bestPosts').show(400, 'swing', function() {
+            player.currentGenre = 'best';
+            loadInitial();
+            player.initialized.best = true;
+        });
+    } else {
+        $('#bestPosts').show(400, 'swing');
+    }
 });
 
+$('#all').click(function() {
+    player.currentGenre = 'all';
+    hidePosts();
+    changeFontColor();
+    $('#all').css('color', '#ff4400');
+    if (player.initialized.all == false) {
+        $('#allPosts').show(400, 'swing', function() {
+            loadInitial();
+            player.initialized.all = true;
+        });
+    } else {
+        $('#allPosts').show(400, 'swing');
+    }
+});
 
-var scrollLoad = function() {
-	if($(window).scrollTop() + $(window).height() > $(document).height() - 300) {
-			$(window).off('scroll');
-			console.log("Listener is off!");
-			loadNextPosts();
-			setTimeout(function() {
-				$(window).on('scroll', scrollLoad);
-				console.log("Listener is back!")
-			}, 100);
-	}
-}
+$('#playPrev').click(function(event) {
+    event.preventDefault();
+    player.song.prev.play();
+    player.song.prev.seekTo(0);
+});
 
+$('#playPause').click(function(event) {
+    event.preventDefault();
+    var x = player.song.curr.isPaused(function(resp) {
+        if (resp) {
+            player.song.curr.play();
+            $('#playPause').html('<span class="glyphicon glyphicon-play">');
+        } else {
+            player.song.curr.pause();
+            $('#playPause').html('<span class="glyphicon glyphicon-pause">');
+        }
+    });
+});
 
-$(document).ready(function(){
-	$('#front').css("color", "#ff4400");
-	$.get('/api/posts', {page: 0, limit: 6, offset: 0}, function(html) {
-		for (i = 0; i<html.length; i++) {
-				$('#posts').append(html[i].embed);
-			}
-		var widgets = $('iframe').toArray();
-		for (var i=0; i<widgets.length; i++) {
-			widgetObjs[i] = SC.Widget(widgets[i]);
-		}	
-		for (var i=0; i<widgetObjs.length; i++) {
-			if(i>=widgetObjs.length-2) {
-				setTriggerLoad();
-			}
-			bindTwo(widgetObjs[i], widgetObjs[i+1]);
-		}
-	});
-	setTimeout(function() {
-	$(window).on('scroll', scrollLoad);
-	}, 500);
+$('#playNext').click(function(event) {
+    event.preventDefault();
+    player.song.next.play();
+    player.song.next.seekTo(0);
+});
 
-	var ua = navigator.userAgent.toLowerCase(); 
-	  if (ua.indexOf('safari') != -1) { 
-	    if (ua.indexOf('chrome') > -1) {
-	      alert("1") // Chrome
-	    } else {
-	      alert("In order to play widget audio, you must go to Safari >> Preferences >> Advanced >> \"Stop plug-ins to save power\" and uncheck the corresponding box.");
-	    }
-	  }
-
+$(document).ready(function() {
+    loadInitial(player.currentGenre);
+    $('#all').css('color', '#ff4400');
+    setTimeout(function() {
+        $(window).on('scroll', scrollLoad);
+    }, 1000);
 });

@@ -12,32 +12,50 @@
 
 		</script>
 		<title> LNY/MSC </title>
-		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/bootstrap.css" rel="stylesheet">
 		<link rel="icon" type="image/png" href="imgs/favicon.png">
 	</head>
 	<body>
-		<row>
+		<nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+		    <div class="container-fluid">
+		        <div class="row">
+				    <ul class="nav navbar-nav navbar-right visible-md visible-lg">
+				    	<li><a href="#" id="playPrev"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
+				    	<li><a href="#" id="playPause"><span class="glyphicon glyphicon-play"></span></a></li>
+				    	<li style="padding-right: 70px"><a href="#" id="playNext"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
+				    </ul>
+				</div>
+		    </div>
+		</nav>
 			<img id="logo" src="imgs/icon.png" style="display: block; margin-left: auto; margin-right: auto;"></img>
-		</row>
-		<div class="row" id="topBar">
-			<div id="leftNav" class="col-md-2"></div>
-			<div id="navColumn" class="col-md-8">
-				<table id="nav" class="table" class="text-center" style="table-layout: fixed">
-					<tr>
-						<td align="center" id="front" style="cursor: pointer">All</td>				
-						<td align="center" id="excite" style="cursor: pointer">Excite</td>
-						<td align="center" id="bounce" style="cursor: pointer">Bounce</td>
-						<td align="center" id="heavy" style="cursor: pointer">Heavy</td>
-						<td align="center" id="mellow" style="cursor: pointer">Mellow</td>
-						<td align="center" id="daze" style="cursor: pointer">Daze</td>
-						<td align="center" id="best" style="cursor: pointer">Best</td>	
-					</tr>
-				</table>
+			<div class="row" id="topBar">
+				<div id="leftNav" class="col-md-2"></div>
+				<div id="navColumn" class="col-md-8">
+					<table id="nav" class="table" class="text-center" style="table-layout: fixed">
+						<tr>
+							<td align="center" id="all" style="cursor: pointer">All</td>				
+							<td align="center" id="excite" style="cursor: pointer">Excite</td>
+							<td align="center" id="bounce" style="cursor: pointer">Bounce</td>
+							<td align="center" id="heavy" style="cursor: pointer">Heavy</td>
+							<td align="center" id="mellow" style="cursor: pointer">Mellow</td>
+							<td align="center" id="daze" style="cursor: pointer">Daze</td>
+							<td align="center" id="best" style="cursor: pointer">Best</td>	
+						</tr>
+					</table>
+				</div>
+				<div id="rightNav" class="col-md-2"></div>
 			</div>
-			<div id="rightNav" class="col-md-2"></div>
-		</div>
+		</row>
 		<div id="leftCol" class="col-md-2"> </div>
-		<div id="posts" class="col-md-8" style="padding-bottom: 250px"> </div>
+		<div id="centeredContent">
+			<div id="allPosts" class="col-md-8" style="padding-bottom: 250px"> </div>
+			<div id="excitePosts" class="col-md-8" style="padding-bottom: 250px; display: none"> </div>
+			<div id="bouncePosts" class="col-md-8" style="padding-bottom: 250px; display: none"> </div>
+			<div id="heavyPosts" class="col-md-8" style="padding-bottom: 250px; display: none"> </div>
+			<div id="mellowPosts" class="col-md-8" style="padding-bottom: 250px; display: none"> </div>
+			<div id="dazePosts" class="col-md-8" style="padding-bottom: 250px; display: none"> </div>
+			<div id="bestPosts" class="col-md-8" style="padding-bottom: 250px; display: none"> </div>
+		</div>
 		<div id="rightCol" class="col-md-2"></div>
 	</body>
 	<script src="//connect.soundcloud.com/sdk.js"></script>
